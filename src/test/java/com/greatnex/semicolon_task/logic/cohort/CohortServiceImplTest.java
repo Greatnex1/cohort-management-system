@@ -54,9 +54,6 @@ class CohortServiceImplTest {
                 .description("test intelligence of students in cohort")
                 .build();
 
-
-
-
     }
 
     @Test
