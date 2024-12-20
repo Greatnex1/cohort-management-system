@@ -1,10 +1,11 @@
 package com.greatnex.semicolon_task.logic.cohort;
 
+import com.greatnex.semicolon_task.dtos.request.CohortRequest;
 import com.greatnex.semicolon_task.entity.dtos.CohortDto;
 import com.greatnex.semicolon_task.entity.dtos.InstructorDto;
 import com.greatnex.semicolon_task.entity.dtos.LearnerDto;
 import com.greatnex.semicolon_task.entity.models.Cohort;
-import com.greatnex.semicolon_task.entity.models.InvitationToken;
+//import com.greatnex.semicolon_task.entity.models.InvitationToken;
 import com.greatnex.semicolon_task.entity.models.users.Instructor;
 import com.greatnex.semicolon_task.entity.models.users.Learner;
 import com.greatnex.semicolon_task.exception.CohortAlreadyExistException;
@@ -13,7 +14,7 @@ import com.greatnex.semicolon_task.exception.LearnerAlreadyExistException;
 import com.greatnex.semicolon_task.logic.invitation.EmailService;
 import com.greatnex.semicolon_task.repository.CohortRepository;
 import com.greatnex.semicolon_task.repository.LearnerRepository;
-import com.greatnex.semicolon_task.repository.TokenRepository;
+//import com.greatnex.semicolon_task.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -59,12 +60,28 @@ public class CohortServiceImpl implements CohortService{
      return cohortRepository.save(cohort);
 
     }
+
+    @Override
+    public Cohort saveCohort(Cohort cohort) throws CohortAlreadyExistException {
+
+        if(cohortRepository.findByCohortName(cohort.getCohortName()).isPresent()) {
+            log.info("this cohort name {} is already taken, please use another name to create cohort",cohort.getCohortName());
+            throw new CohortAlreadyExistException("There is a cohort account with  this detail");
+        }
+        Cohort saveCohort = new Cohort();
+        saveCohort.setCohortName(cohort.getCohortName());
+        saveCohort.setDescription(cohort.getDescription());
+        saveCohort.setDateCohortStarted(cohort.getDateCohortStarted());
+
+       return cohortRepository.save(saveCohort);
+
+
+    }
+
     @Override
     public Optional<Cohort> findCohortById(Long id)  {
 
- if(cohortRepository.findCohortById(id).isEmpty()){
-     log.warn("This cohort does not exist {}" , id);
- }
+       // cohortRepository.findCohortById(id);//log.warn("cohort does not exist {}" , id);
         return cohortRepository.findById(id);
 
     }
@@ -126,13 +143,13 @@ public class CohortServiceImpl implements CohortService{
         return savedCohort;
     }
 
-    @Override
-    public void deleteCohortById(Long id) {
-        var  cohort =cohortRepository.findCohortById(id);
-        cohortRepository.deleteById(id);
-        log.info("cohort is removed");
-        cohortRepository.deleteById(id);
-    }
+//    @Override
+//    public void deleteCohortById(Long id) {
+//        var  cohort =cohortRepository.findCohortById(id);
+//        cohortRepository.deleteById(id);
+//        log.info("cohort is removed");
+//        cohortRepository.deleteById(id);
+//    }
 
     @Override
     public boolean inviteLearnerToCohort(Long learnerId, Long cohortId) {
@@ -154,6 +171,15 @@ public class CohortServiceImpl implements CohortService{
                 ()-> new CohortNotFoundException("Cohort with name " + cohort_name +"does not exist" ));
         cohortRepository.deleteById(cohort.getId());
         log.info("cohort removed");
+
+    }
+
+    @Override
+    public void deleteCohortById(Long id) {
+//        Cohort cohort =cohortRepository.findById(id).orElseThrow(
+//                ()-> new CohortNotFoundException("Cohort with id " + id +" does not exist" ));
+        cohortRepository.deleteById(id);
+        log.info("cohort with id -> {} deleted",id);
 
     }
 //            String token = UUID.randomUUID().toString();
