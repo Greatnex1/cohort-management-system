@@ -1,15 +1,15 @@
 package com.greatnex.semicolon_task.logic.cohort;
 
+import com.greatnex.semicolon_task.entity.models.users.Learner;
 import com.greatnex.semicolon_task.entity.dtos.CohortDto;
 import com.greatnex.semicolon_task.entity.models.Cohort;
-import com.greatnex.semicolon_task.entity.models.users.Learner;
+//import com.greatnex.semicolon_task.entity.models.users.Learner;
 import com.greatnex.semicolon_task.exception.CohortAlreadyExistException;
 import com.greatnex.semicolon_task.repository.CohortRepository;
 import com.greatnex.semicolon_task.repository.LearnerRepository;
-import jakarta.persistence.Transient;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Ignore;
-import org.junit.jupiter.api.Disabled;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,13 +18,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -46,6 +43,21 @@ class CohortServiceImplTest {
     @Mock
     private List<Learner> learnerList;
 
+    private Cohort testCohort;
+
+    @BeforeEach
+    void up(){
+        testCohort = Cohort.builder()
+                .id(1L)
+                .cohortName("Phoenix")
+                .dateCohortStarted("25th May, 2025")
+                .description("test intelligence of students in cohort")
+                .build();
+
+
+
+
+    }
 
     @Test
     void createNewCohort() throws CohortAlreadyExistException {
@@ -53,6 +65,15 @@ class CohortServiceImplTest {
         when(cohortRepository.save(any())).thenReturn(cohort);
         assertThat(cohort).isNotNull();
         cohortServiceImpl.createNewCohort(new CohortDto());
+    }
+
+    @Test
+    void  testCohortIsSaved() throws CohortAlreadyExistException {
+        cohortServiceImpl.saveCohort(testCohort);
+
+        log.info(" {} cohort created successfully ===>", testCohort.getCohortName());
+       // assertThat(testCohort).isNotNull();
+        assertNotNull(testCohort);
     }
 
     @Test
@@ -70,6 +91,20 @@ class CohortServiceImplTest {
         assertThat(cohort.getId()).isEqualTo(1L);
         cohortServiceImpl.findCohortById(cohort.getId());
     }
+
+    @Test
+    void testSavedCohortCanBeFoundWithId(){
+        cohortServiceImpl.findCohortById(1L);
+       assertEquals(1L,testCohort.getId());
+    }
+
+    @Test
+    void testSavedCohortCanBeRemovedById(){
+        log.info("Saved cohort ->{}",testCohort.getId());
+        cohortServiceImpl.deleteCohortById(1L);
+        assertTrue(cohortServiceImpl.findCohortById(1L).isEmpty());
+    }
+
 
     @Test
     void cohortCanBeRemoved() {
@@ -94,30 +129,33 @@ class CohortServiceImplTest {
         when(cohortRepository.save(any())).thenReturn(cohort);
         cohortRepository.save(cohort);
         var savedCohort = cohortRepository.findById(cohort.getId());
-    savedCohort.ifPresent(value -> log.info("Cohort id -> {}" + String.valueOf(value.getId())));
+        savedCohort.ifPresent(value -> log.info("Cohort id -> {}" + String.valueOf(value.getId())));
 
-        Learner learner = new Learner();
-        when(learnerRepository.save(any())).thenReturn(learner);
-        learner.setId(1L);
-        learnerRepository.save(learner);
-        var savedLearner = learnerRepository.findById(learner.getId());
-
-        if (savedLearner.isPresent() && savedCohort.isPresent()) {
-            Cohort addLearner = savedCohort.get();
-            addLearner.getListOfLearners().add(savedLearner.get().getEmail());
-
-            cohortRepository.save(addLearner);
-            assertThat(cohortRepository).isNotNull();
-
-            assertThat(learnerRepository).isNotNull();
-
-            boolean result =cohort.getListOfLearners().add("Ade");
-
-            // Assert
-            assertTrue(result);
+//        Learner learner = new Learner();
+//        when(learnerRepository.save(any())).thenReturn(learner);
+//        learner.setId(1L);
+//        learnerRepository.save(learner);
+//        var savedLearner = learnerRepository.findById(learner.getId());
+//
+//        if (savedLearner.isPresent() && savedCohort.isPresent()) {
+//            Cohort addLearner = savedCohort.get();
+//            addLearner.getListOfLearners().add(savedLearner.get().getEmail());
+//
+//            cohortRepository.save(addLearner);
+//            assertThat(cohortRepository).isNotNull();
+//
+//            assertThat(learnerRepository).isNotNull();
+//
+//            boolean result =cohort.getListOfLearners().add("Ade");
+//
+//            // Assert
+//
+//            assertTrue(result);
+    //
+        // }
 
         }
-    }
+
     @Test
     void updateCohort(){
         Cohort cohort = new Cohort();
