@@ -9,11 +9,5 @@ import java.util.Optional;
 
 public interface CohortRepository extends JpaRepository<CohortEntity, String> {
 
-    List<Cohort> findCohortById(String id);
-
-
-
-    Optional<Cohort> findByCohortName(String cohortName);
-
 
 }

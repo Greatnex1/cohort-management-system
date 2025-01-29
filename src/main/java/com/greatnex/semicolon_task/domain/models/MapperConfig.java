@@ -1,4 +1,4 @@
-package com.greatnex.semicolon_task.entity.models;
+package com.greatnex.semicolon_task.domain.models;
 
 
 import org.modelmapper.ModelMapper;
