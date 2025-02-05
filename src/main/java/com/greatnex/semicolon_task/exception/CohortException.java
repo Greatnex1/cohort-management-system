@@ -1,13 +1,15 @@
 package com.greatnex.semicolon_task.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class CohortException extends Exception {
-//    private HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+    private HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
 
-//    public KarraboException(String message, HttpStatus httpStatus) {
-//        super(message);
-//        this.status = httpStatus;
-//    }
+    public CohortException(String message, HttpStatus httpStatus) {
+        super(message);
+        this.status = httpStatus;
+    }
 
     public CohortException(String message) {
         super(message);

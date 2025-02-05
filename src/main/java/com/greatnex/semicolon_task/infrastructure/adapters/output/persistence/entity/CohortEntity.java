@@ -6,13 +6,15 @@ import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Builder
 @Getter
 @Setter
 @Entity
-@Table(name = "cohortss")
+@Table(name = "cohorts")
 @AllArgsConstructor
 @NoArgsConstructor
 public class CohortEntity {
@@ -21,21 +23,23 @@ public class CohortEntity {
     @UuidGenerator
     private String id;
 
-    private String cohortName;
+//   @Column(unique = true)
+    private String name;
 
+//    @Column(length = 5000)
     private  String description;
 
-    private String dateCohortEnded;
+    private String avatar;
 
-    private String cohortAvatar;
-
-    private String scheduleAnEvent;
+    private String schedule;
 
     private String announcement;
 
-    private String shareResource;
+    private String sharedResource;
 
-    private ZonedDateTime dateCohortStarted;
+    private LocalDate dateEnded;
+
+    private ZonedDateTime dateCreated;
 
     private String createdBy;
 

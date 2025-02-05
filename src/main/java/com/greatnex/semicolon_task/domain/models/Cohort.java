@@ -1,10 +1,13 @@
 package com.greatnex.semicolon_task.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.greatnex.semicolon_task.domain.validator.InputValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,21 +36,21 @@ public class Cohort {
 
     private String avatar;
 
-    private String dateEnded;
+    private LocalDate dateEnded;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXXXX'['VV']'")
     private ZonedDateTime dateCreated;
 
     private String createdBy;
 
 
     public  void validateCohortData(){
-        validateInput(getName());
-        validateInput(getAvatar());
-        validateInput(getDescription());
-        validateInput(getAnnouncement());
-        validateInput(getSharedResource());
-        validateInput(getSchedule());
-        validateInput(getDateEnded());
+        validateInput(getName(),"name");
+        validateInput(getAvatar(), "avatar");
+        validateInput(getDescription(), "description");
+        validateInput(getAnnouncement(), "announcement");
+        validateInput(getSharedResource(), "sharedResource");
+        validateInput(getSchedule(), "schedule");
     }
 
 //    @ElementCollection(fetch = FetchType.LAZY)
