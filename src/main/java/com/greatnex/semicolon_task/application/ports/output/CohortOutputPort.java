@@ -1,7 +1,7 @@
 package com.greatnex.semicolon_task.application.ports.output;
 
 import com.greatnex.semicolon_task.domain.models.Cohort;
-import com.greatnex.semicolon_task.exception.CohortException;
+import com.greatnex.semicolon_task.domain.exception.CohortException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,4 +10,5 @@ public interface CohortOutputPort {
     Cohort findCohortById(String cohortId) throws CohortException;
     Page<Cohort> findAllCohort(Pageable pageable);
     void deleteCohort(String id) throws CohortException;
+    boolean checkCohortNameAlreadyExist(String id);
 }

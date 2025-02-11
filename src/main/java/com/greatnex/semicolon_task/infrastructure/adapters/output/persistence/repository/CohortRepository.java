@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface CohortRepository extends JpaRepository<CohortEntity, String> {
 
-
+   boolean existsByName(String name);
 }

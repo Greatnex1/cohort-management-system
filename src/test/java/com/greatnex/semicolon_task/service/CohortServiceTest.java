@@ -1,10 +1,12 @@
 package com.greatnex.semicolon_task.service;
 
 import com.greatnex.semicolon_task.application.ports.output.CohortOutputPort;
-import com.greatnex.semicolon_task.domain.messages.ErrorMessages;
+import com.greatnex.semicolon_task.application.ports.output.GetUserFullNameOutputPort;
 import com.greatnex.semicolon_task.domain.models.Cohort;
+import com.greatnex.semicolon_task.domain.models.PlatformUser;
 import com.greatnex.semicolon_task.domain.service.CohortService;
-import com.greatnex.semicolon_task.exception.CohortException;
+import com.greatnex.semicolon_task.domain.exception.CohortException;
+import com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.repository.PlatformUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,14 @@ public class CohortServiceTest {
     @Autowired
     private CohortService cohortService;
 
+    @MockBean
+    GetUserFullNameOutputPort userFullNameOutputPort;
+
+    @Autowired
+    PlatformUserRepository userRepository;
+
      Cohort cohort;
+     PlatformUser user ;
 
 
      @BeforeEach
@@ -50,13 +58,21 @@ public class CohortServiceTest {
                  .createdBy("Admin")
                  .build();
 
+         user = PlatformUser.builder()
+                 .email("yinka@gmail.com")
+                 .name("Yinka")
+                 .firstName("Yinka")
+                 .lastName("Adewale")
+                 .keycloakClientId("222345erfT")
+                 .build();
+
      }
 
      @Test
     void testCreateCohort() throws CohortException {
          when(cohortOutputPort.saveCohortDetails(any(Cohort.class))).thenReturn(cohort);
         log.info("Created Cohort: {}", cohort);
-        Cohort savedCohort = cohortService.createCohort(cohort);
+        Cohort savedCohort = cohortService.createCohort(user,cohort);
         assertNotNull(savedCohort);
         assertEquals(cohort.getName(), savedCohort.getName());
 
@@ -70,7 +86,7 @@ public class CohortServiceTest {
                  .avatar("Img1123-45")
                  .build();
 
-         CohortException exception = assertThrows(CohortException.class, () -> cohortService.createCohort(cohort));
+         CohortException exception = assertThrows(CohortException.class, () -> cohortService.createCohort(user, cohort));
          assertEquals (exception.getLocalizedMessage(),  exception.getMessage());
      }
 

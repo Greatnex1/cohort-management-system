@@ -1,4 +1,4 @@
-package com.greatnex.semicolon_task.exception;
+package com.greatnex.semicolon_task.domain.exception;
 
 import org.springframework.http.HttpStatus;
 

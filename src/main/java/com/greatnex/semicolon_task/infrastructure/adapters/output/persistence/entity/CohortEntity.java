@@ -1,5 +1,6 @@
 package com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -23,10 +24,10 @@ public class CohortEntity {
     @UuidGenerator
     private String id;
 
-//   @Column(unique = true)
+   @Column(unique = true)
     private String name;
 
-//    @Column(length = 5000)
+    @Column(length = 5000)
     private  String description;
 
     private String avatar;

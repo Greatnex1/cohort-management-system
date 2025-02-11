@@ -9,7 +9,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CohortRestMapper {
-    Cohort toCohort (CohortRequest cohortRequest);
-//    @Mapping(source = "id", target = "createdBy")
-    CohortResponse toCohortResponse (Cohort cohort);
+    @Mapping(source = "userId", target = "createdBy")
+    Cohort toCohort (CohortRequest cohortRequest, String userId);
+  //  @Mapping(source = "cohort.id", target = "id")
+  CohortResponse toCohortResponse (Cohort cohort);
 }

@@ -1,9 +1,9 @@
-package com.greatnex.semicolon_task.infrastructure.adapters;
+package com.greatnex.semicolon_task.infrastructure.adapters.output.persistence;
 
 import com.greatnex.semicolon_task.application.ports.output.CohortOutputPort;
 import com.greatnex.semicolon_task.domain.messages.ErrorMessages;
 import com.greatnex.semicolon_task.domain.models.Cohort;
-import com.greatnex.semicolon_task.exception.CohortException;
+import com.greatnex.semicolon_task.domain.exception.CohortException;
 import com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.entity.CohortEntity;
 import com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.mapper.CohortMapper;
 import com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.repository.CohortRepository;
@@ -40,8 +40,7 @@ public class CohortPersistenceAdapter implements CohortOutputPort {
                     new CohortException(ErrorMessages.COHORT_NOT_FOUND, HttpStatus.NOT_FOUND));
             return cohortMapper.toCohort(savedCohortEntity);
         }
-
-   throw new CohortException(ErrorMessages.COHORT_CANT_BE_NULL, HttpStatus.BAD_REQUEST);
+        throw new CohortException(ErrorMessages.COHORT_CANT_BE_NULL, HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -65,8 +64,11 @@ public class CohortPersistenceAdapter implements CohortOutputPort {
      log.info("Deleting cohort by id {}", id);
         if(StringUtils.isNotEmpty(id)){
             cohortRepository.deleteById(id);
-        }
+        }else throw new CohortException(ErrorMessages.COHORT_CANT_BE_NULL, HttpStatus.BAD_REQUEST);
+    }
 
-        throw new CohortException(ErrorMessages.COHORT_CANT_BE_NULL, HttpStatus.BAD_REQUEST);
+    @Override
+    public boolean checkCohortNameAlreadyExist(String name) {
+        return cohortRepository.existsByName(name);
     }
 }
