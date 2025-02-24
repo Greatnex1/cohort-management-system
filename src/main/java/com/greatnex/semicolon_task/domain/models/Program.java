@@ -1,27 +1,30 @@
-package com.greatnex.semicolon_task.entity.models;
+package com.greatnex.semicolon_task.domain.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Entity
-@Data
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Program {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @NotEmpty
+    private String id;
+
     private String nameOfProgram;
-    @NotEmpty
+
     private String programDetails;
-    @NotEmpty
+
     private String dateCreated;
+
+    private String createdBy;
 
     private int views;
 
