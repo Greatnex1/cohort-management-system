@@ -1,7 +1,9 @@
 package com.greatnex.semicolon_task.service;
 
+import com.greatnex.semicolon_task.application.ports.output.AuditLogOutputPort;
 import com.greatnex.semicolon_task.application.ports.output.CohortOutputPort;
 import com.greatnex.semicolon_task.application.ports.output.GetUserFullNameOutputPort;
+import com.greatnex.semicolon_task.domain.models.AuditLogObject;
 import com.greatnex.semicolon_task.domain.models.Cohort;
 import com.greatnex.semicolon_task.domain.models.PlatformUser;
 import com.greatnex.semicolon_task.domain.service.CohortService;
@@ -37,11 +39,12 @@ public class CohortServiceTest {
     @MockBean
     GetUserFullNameOutputPort userFullNameOutputPort;
 
-    @Autowired
-    PlatformUserRepository userRepository;
+    @MockBean
+    AuditLogOutputPort auditLogOutputPort;
 
-     Cohort cohort;
-     PlatformUser user ;
+
+    private Cohort cohort;
+    private PlatformUser user ;
 
 
      @BeforeEach
@@ -59,7 +62,9 @@ public class CohortServiceTest {
                  .build();
 
          user = PlatformUser.builder()
+                 .id("is2304R")
                  .email("yinka@gmail.com")
+                 .enabled(true)
                  .name("Yinka")
                  .firstName("Yinka")
                  .lastName("Adewale")
@@ -70,8 +75,17 @@ public class CohortServiceTest {
 
      @Test
     void testCreateCohort() throws CohortException {
+         AuditLogObject auditLogObject = AuditLogObject.builder()
+                 .action("CREATE_COHORT")
+                 .description(String.format("User: %s %s performed action: create cohort on %s with Cohort Name: %s.",
+                         user.getFirstName(), user.getLastName(),
+                         cohort.getDateCreated(),cohort.getName()))
+                 .dateCreated(ZonedDateTime.now())
+                 .createdBy(user.getId())
+                 .build();
          when(cohortOutputPort.saveCohortDetails(any(Cohort.class))).thenReturn(cohort);
-        log.info("Created Cohort: {}", cohort);
+         log.info("Created Cohort: {}", cohort);
+         when(auditLogOutputPort.saveAuditLog(any(AuditLogObject.class))).thenReturn(auditLogObject);
         Cohort savedCohort = cohortService.createCohort(user,cohort);
         assertNotNull(savedCohort);
         assertEquals(cohort.getName(), savedCohort.getName());
