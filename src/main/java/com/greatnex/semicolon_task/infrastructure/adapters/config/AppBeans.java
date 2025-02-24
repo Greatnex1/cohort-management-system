@@ -1,8 +1,11 @@
 package com.greatnex.semicolon_task.infrastructure.adapters.config;
 
+import com.greatnex.semicolon_task.application.ports.output.AuditLogOutputPort;
 import com.greatnex.semicolon_task.application.ports.output.CohortOutputPort;
+import com.greatnex.semicolon_task.application.ports.output.GetUserFullNameOutputPort;
+import com.greatnex.semicolon_task.application.ports.output.PlatformUserOutputPort;
 import com.greatnex.semicolon_task.domain.service.CohortService;
-import com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.repository.CohortRepository;
+import com.greatnex.semicolon_task.domain.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,7 +13,12 @@ import org.springframework.context.annotation.Configuration;
 public class AppBeans {
 
     @Bean
-    public CohortService cohortService(CohortOutputPort cohortOutputPort) {
-        return new CohortService(cohortOutputPort);
+    public CohortService cohortService(CohortOutputPort cohortOutputPort, AuditLogOutputPort auditLogOutputPort) {
+        return new CohortService(cohortOutputPort, auditLogOutputPort);
+    }
+
+    @Bean
+    public UserService userService(GetUserFullNameOutputPort getUserNameOutputPort){
+        return new UserService(getUserNameOutputPort);
     }
 }
