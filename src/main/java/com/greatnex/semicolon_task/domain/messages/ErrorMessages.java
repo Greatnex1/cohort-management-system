@@ -10,6 +10,7 @@ public class ErrorMessages {
     public static final String COHORT_CANT_BE_NULL ="Cohort cannot be null";
     public static final String INVALID_TOKEN ="Token is invalid";
     public static final String CLIENT_MORE_THAN_ONE = "More than one client found";
+    public static final String USER_NOT_FOUND= "User cannot be found";
 
 
 
