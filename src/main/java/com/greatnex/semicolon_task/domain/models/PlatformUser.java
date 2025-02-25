@@ -40,13 +40,13 @@ public class PlatformUser {
 
 
     public void validateUserRequiredData(){
-        validateInput(getEmail());
-        validateInput(getFirstName());
-        validateInput(getLastName());
-        validateInput(getMiddleName());
-        validateInput(getPhoneNumber());
-        validateInput(getUsername());
-        validateInput(getKeycloakClientId());
+        validateInput(getEmail(), "email");
+        validateInput(getFirstName(), "firstName");
+        validateInput(getLastName(), "lastName");
+        validateInput(getMiddleName(), "middleName");
+        validateInput(getPhoneNumber(), "phoneNumber");
+        validateInput(getUsername(), "username");
+        validateInput(getKeycloakClientId(), "keycloakClientId");
     }
 
    }
