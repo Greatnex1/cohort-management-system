@@ -6,6 +6,6 @@ import com.greatnex.semicolon_task.domain.models.PlatformUser;
 
 public interface PlatformUserOutputPort {
     PlatformUser save (PlatformUser platformUser);
-   PlatformUser findUserById(String id) throws UserException;
+    PlatformUser findUserById(String id) throws UserException;
     boolean userExists(String id);
 }

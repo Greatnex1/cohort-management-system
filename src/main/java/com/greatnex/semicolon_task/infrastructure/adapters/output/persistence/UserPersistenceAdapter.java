@@ -31,6 +31,7 @@ public class UserPersistenceAdapter implements GetUserFullNameOutputPort, Platfo
 
     @Override
     public PlatformUser save(PlatformUser platformUser) {
+        log.info("Saving user identity {}", platformUser);
         platformUser.validateUserRequiredData();
    PlatformUserEntity userEntity = platformUserMapper.toPlatformUserEntity(platformUser);
     userRepository.save(userEntity);

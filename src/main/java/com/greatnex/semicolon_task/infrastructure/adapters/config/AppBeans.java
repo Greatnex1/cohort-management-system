@@ -4,8 +4,7 @@ import com.greatnex.semicolon_task.application.ports.output.AuditLogOutputPort;
 import com.greatnex.semicolon_task.application.ports.output.CohortOutputPort;
 import com.greatnex.semicolon_task.application.ports.output.GetUserFullNameOutputPort;
 import com.greatnex.semicolon_task.application.ports.output.PlatformUserOutputPort;
-import com.greatnex.semicolon_task.domain.service.CohortService;
-import com.greatnex.semicolon_task.domain.service.UserService;
+import com.greatnex.semicolon_task.domain.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
