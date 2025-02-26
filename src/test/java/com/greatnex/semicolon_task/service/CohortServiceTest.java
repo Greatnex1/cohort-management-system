@@ -28,16 +28,13 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Slf4j
-public class CohortServiceTest {
+class CohortServiceTest {
 
     @MockBean
     private CohortOutputPort cohortOutputPort;
 
     @Autowired
     private CohortService cohortService;
-
-    @MockBean
-    GetUserFullNameOutputPort userFullNameOutputPort;
 
     @MockBean
     AuditLogOutputPort auditLogOutputPort;

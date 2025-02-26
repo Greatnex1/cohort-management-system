@@ -1,6 +1,7 @@
 package com.greatnex.semicolon_task.infrastructure.adapters.config.security;
 
 import com.greatnex.semicolon_task.application.ports.output.GetUserFullNameOutputPort;
+import com.greatnex.semicolon_task.application.ports.output.PlatformUserOutputPort;
 import com.greatnex.semicolon_task.domain.models.PlatformUser;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,7 +30,7 @@ import java.util.Map;
 public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     private final SecurityUtils securityUtils;
-   private final GetUserFullNameOutputPort userOutputPort;
+   private final PlatformUserOutputPort userOutputPort;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -91,14 +92,6 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private boolean userExists(String id){
-        return userOutputPort.userExists(id);
-    }
-
-    private void createUser(PlatformUser userIdentity){
-        userOutputPort.save(userIdentity);
-    }
-
     private boolean validatePermission(Jwt token, PlatformUser userIdentity){
         List<String> requiredPermissions = List.of("CREATE_COHORT","VIEW_COHORT","VIEW_ALL_COHORTS");
 
@@ -110,6 +103,14 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         }
 
         return userPermissions.stream().anyMatch(requiredPermissions::contains);
+    }
+
+    private boolean userExists(String id){
+        return userOutputPort.userExists(id);
+    }
+
+    private void createUser(PlatformUser userIdentity){
+        userOutputPort.save(userIdentity);
     }
 
 }
