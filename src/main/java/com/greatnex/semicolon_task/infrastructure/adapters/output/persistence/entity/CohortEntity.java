@@ -19,7 +19,6 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CohortEntity {
-
     @Id
     @UuidGenerator
     private String id;
