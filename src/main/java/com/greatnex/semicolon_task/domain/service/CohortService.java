@@ -61,7 +61,6 @@ public class CohortService implements CohortUseCase {
             throw new CohortException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
         }
 
-
     }
 
     @Override
@@ -79,7 +78,6 @@ public class CohortService implements CohortUseCase {
        cohorts  = cohortOutputPort.findAllCohort(pageable);
         return cohorts;
     }
-
 
     public static @NotNull PageRequestData getPageRequestData(int page, int size) {
         if(page < 0)
