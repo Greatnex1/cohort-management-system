@@ -11,6 +11,7 @@ public class ErrorMessages {
     public static final String INVALID_TOKEN ="Token is invalid";
     public static final String CLIENT_MORE_THAN_ONE = "More than one client found";
     public static final String USER_NOT_FOUND= "User cannot be found";
+    public static final String INVALID_COURSE_PERIOD= "Invalid course period";
 
 
 
