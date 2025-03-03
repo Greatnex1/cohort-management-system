@@ -42,9 +42,9 @@ public class CohortService implements CohortUseCase {
             }
             cohort.setDateCreated(ZonedDateTime.now());
 
-//            if(ObjectUtils.isNotEmpty(identity)) {
-//                cohort.setCreatedBy(identity.getId());
-//            }else throw new  IllegalArgumentException(String.format(ErrorMessages.EMPTY_INPUT_ERROR, "created by"));
+            if(ObjectUtils.isNotEmpty(identity)) {
+                cohort.setCreatedBy(identity.getId());
+            }else throw new  IllegalArgumentException(String.format(ErrorMessages.EMPTY_INPUT_ERROR, "created by"));
 
             cohort.validateCohortData();
             log.info("Cohort info: {}", cohort.getName());
