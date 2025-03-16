@@ -1,7 +1,7 @@
 package com.greatnex.semicolon_task.infrastructure.adapters;
 
 import com.greatnex.semicolon_task.domain.models.Cohort;
-import com.greatnex.semicolon_task.domain.exception.CohortException;
+import com.greatnex.semicolon_task.domain.exception.GenericException;
 import com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.CohortPersistenceAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +41,7 @@ class CohortPersistenceAdapterTest {
     }
 
     @Test
-    void saveCohortDetails() throws CohortException {
+    void saveCohortDetails() throws GenericException {
         Cohort savedCohort = cohortPersistenceAdapter.saveCohortDetails(cohort);
         assertNotNull(savedCohort);
         assertEquals(cohort.getName(), savedCohort.getName());
@@ -57,17 +57,17 @@ class CohortPersistenceAdapterTest {
             assertEquals(savedCohort.getName(), cohortDetails.getName());
             assertEquals(savedCohort.getDescription(), cohortDetails.getDescription());
             cohortPersistenceAdapter.deleteCohort(savedCohort.getId());
-        } catch (CohortException e) {
+        } catch (GenericException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Test
     void testFindCohortDetailsThatDoesNotExist() {
-        assertThrows(CohortException.class,()-> cohortPersistenceAdapter.findCohortById("12234"));
+        assertThrows(GenericException.class,()-> cohortPersistenceAdapter.findCohortById("12234"));
     }
     @Test
-    void testGetAllCohort() throws CohortException {
+    void testGetAllCohort() throws GenericException {
       cohort = cohortPersistenceAdapter.saveCohortDetails(cohort);
         Pageable cohortPageable = PageRequest.of(0, 1);
         Page <Cohort> cohortPage = cohortPersistenceAdapter.findAllCohort(cohortPageable);
@@ -83,7 +83,7 @@ class CohortPersistenceAdapterTest {
            cohort = cohortPersistenceAdapter.saveCohortDetails(cohort);
            assertNotNull(cohort);
            cohortPersistenceAdapter.deleteCohort(cohort.getId());
-       }catch (CohortException e) {
+       }catch (GenericException e) {
            throw new RuntimeException(e);
        }
     }
