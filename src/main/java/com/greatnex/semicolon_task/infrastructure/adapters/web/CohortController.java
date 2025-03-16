@@ -3,14 +3,13 @@ package com.greatnex.semicolon_task.infrastructure.adapters.web;
 import com.greatnex.semicolon_task.application.ports.input.CohortUseCase;
 import com.greatnex.semicolon_task.application.ports.output.GetUserFullNameOutputPort;
 import com.greatnex.semicolon_task.domain.models.Cohort;
-import com.greatnex.semicolon_task.domain.exception.CohortException;
+import com.greatnex.semicolon_task.domain.exception.GenericException;
 import com.greatnex.semicolon_task.domain.models.PlatformUser;
 import com.greatnex.semicolon_task.infrastructure.adapters.input.rest.constant.UrlConstants;
 import com.greatnex.semicolon_task.infrastructure.adapters.input.rest.data.ApiResponse;
 import com.greatnex.semicolon_task.infrastructure.adapters.input.rest.data.mapper.CohortRestMapper;
 import com.greatnex.semicolon_task.infrastructure.adapters.input.rest.data.request.CohortRequest;
 import com.greatnex.semicolon_task.infrastructure.adapters.input.rest.data.respond.CohortResponse;
-import com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.mapper.CohortMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,7 @@ public class CohortController {
     
 
     @PostMapping
-    public ResponseEntity<ApiResponse<CohortResponse>> createCohort(PlatformUser identity , @Valid @RequestBody CohortRequest cohortRequest) throws CohortException {
+    public ResponseEntity<ApiResponse<CohortResponse>> createCohort(PlatformUser identity , @Valid @RequestBody CohortRequest cohortRequest) throws GenericException {
     Cohort cohort = cohortRestMapper.toCohort(cohortRequest, identity.getId());
     cohort = cohortUseCase.createCohort(identity, cohort);
         String userFullName = userFullNameOutputPort.getUserFullName(cohort.getCreatedBy());
@@ -43,8 +42,5 @@ public class CohortController {
     return new ResponseEntity<>(response.created(cohortResponse, message),HttpStatus.CREATED);
     }
 
-@GetMapping
-    public ResponseEntity<ApiResponse<Page<CohortResponse>>> getAllCohorts(@RequestParam int page, @RequestParam int size) {
-        return null;
-}
+
 }
