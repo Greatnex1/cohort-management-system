@@ -3,7 +3,7 @@ package com.greatnex.semicolon_task.infrastructure.adapters.output.persistence;
 import com.greatnex.semicolon_task.application.ports.output.CohortOutputPort;
 import com.greatnex.semicolon_task.domain.messages.ErrorMessages;
 import com.greatnex.semicolon_task.domain.models.Cohort;
-import com.greatnex.semicolon_task.domain.exception.CohortException;
+import com.greatnex.semicolon_task.domain.exception.GenericException;
 import com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.entity.CohortEntity;
 import com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.mapper.CohortMapper;
 import com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.repository.CohortRepository;
@@ -34,13 +34,13 @@ public class CohortPersistenceAdapter implements CohortOutputPort {
     }
 
     @Override
-    public Cohort findCohortById(String cohortId) throws CohortException {
+    public Cohort findCohortById(String cohortId) throws GenericException {
         if(StringUtils.isNotEmpty(cohortId)){
             CohortEntity savedCohortEntity = cohortRepository.findById(cohortId).orElseThrow(()->
-                    new CohortException(ErrorMessages.COHORT_NOT_FOUND, HttpStatus.NOT_FOUND));
+                    new GenericException(ErrorMessages.COHORT_NOT_FOUND, HttpStatus.NOT_FOUND));
             return cohortMapper.toCohort(savedCohortEntity);
         }
-        throw new CohortException(ErrorMessages.COHORT_CANT_BE_NULL, HttpStatus.BAD_REQUEST);
+        throw new GenericException(ErrorMessages.COHORT_CANT_BE_NULL, HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -60,11 +60,11 @@ public class CohortPersistenceAdapter implements CohortOutputPort {
     }
 
     @Override
-    public void deleteCohort(String id) throws CohortException {
+    public void deleteCohort(String id) throws GenericException {
      log.info("Deleting cohort by id {}", id);
         if(StringUtils.isNotEmpty(id)){
             cohortRepository.deleteById(id);
-        }else throw new CohortException(ErrorMessages.COHORT_CANT_BE_NULL, HttpStatus.BAD_REQUEST);
+        }else throw new GenericException(ErrorMessages.COHORT_CANT_BE_NULL, HttpStatus.BAD_REQUEST);
     }
 
     @Override
