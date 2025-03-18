@@ -1,4 +1,4 @@
-package com.greatnex.semicolon_task.entity.enums;
+package com.greatnex.semicolon_task.domain.enums;
 
 public enum CohortInvitationStatus {
 
