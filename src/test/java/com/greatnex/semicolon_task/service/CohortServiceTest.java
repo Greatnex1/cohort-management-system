@@ -2,13 +2,11 @@ package com.greatnex.semicolon_task.service;
 
 import com.greatnex.semicolon_task.application.ports.output.AuditLogOutputPort;
 import com.greatnex.semicolon_task.application.ports.output.CohortOutputPort;
-import com.greatnex.semicolon_task.application.ports.output.GetUserFullNameOutputPort;
 import com.greatnex.semicolon_task.domain.models.AuditLogObject;
 import com.greatnex.semicolon_task.domain.models.Cohort;
 import com.greatnex.semicolon_task.domain.models.PlatformUser;
 import com.greatnex.semicolon_task.domain.service.CohortService;
-import com.greatnex.semicolon_task.domain.exception.CohortException;
-import com.greatnex.semicolon_task.infrastructure.adapters.output.persistence.repository.PlatformUserRepository;
+import com.greatnex.semicolon_task.domain.exception.GenericException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,7 +69,7 @@ class CohortServiceTest {
      }
 
      @Test
-    void testCreateCohort() throws CohortException {
+    void testCreateCohort() throws GenericException {
          AuditLogObject auditLogObject = AuditLogObject.builder()
                  .action("CREATE_COHORT")
                  .description(String.format("User: %s %s performed action: create cohort on %s with Cohort Name: %s.",
@@ -97,12 +95,12 @@ class CohortServiceTest {
                  .avatar("Img1123-45")
                  .build();
 
-         CohortException exception = assertThrows(CohortException.class, () -> cohortService.createCohort(user, cohort));
+         GenericException exception = assertThrows(GenericException.class, () -> cohortService.createCohort(user, cohort));
          assertEquals (exception.getLocalizedMessage(),  exception.getMessage());
      }
 
      @Test
-    void testViewCohortDetails() throws CohortException {
+    void testViewCohortDetails() throws GenericException {
 try{
     cohort.setId("343578");
     when(cohortOutputPort.findCohortById(cohort.getId())).thenReturn(cohort);
@@ -110,13 +108,13 @@ try{
     assertNotNull(savedCohort);
     assertEquals(cohort.getName(), savedCohort.getName());
     assertEquals(cohort.getId(), savedCohort.getId());
-}catch (CohortException e){
+}catch (GenericException e){
    throw new  RuntimeException(e.getMessage());
 }
      }
 
      @Test
-    void testViewAllCohort() throws CohortException {
+    void testViewAllCohort() throws GenericException {
 
          List<Cohort> cohorts  = new ArrayList<>();
          cohorts.add(cohort);
