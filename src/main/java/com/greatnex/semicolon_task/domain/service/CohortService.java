@@ -6,7 +6,7 @@ import com.greatnex.semicolon_task.application.ports.output.CohortOutputPort;
 import com.greatnex.semicolon_task.domain.messages.ErrorMessages;
 import com.greatnex.semicolon_task.domain.models.AuditLogObject;
 import com.greatnex.semicolon_task.domain.models.Cohort;
-import com.greatnex.semicolon_task.domain.exception.CohortException;
+import com.greatnex.semicolon_task.domain.exception.GenericException;
 import com.greatnex.semicolon_task.domain.models.PlatformUser;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +32,13 @@ public class CohortService implements CohortUseCase {
 
 
     @Override
-    public Cohort createCohort(PlatformUser identity, Cohort cohort) throws CohortException {
+    public Cohort createCohort(PlatformUser identity, Cohort cohort) throws GenericException {
         try{
             if (ObjectUtils.isEmpty(cohort)) {
                 throw new IllegalArgumentException(String.format(ErrorMessages.NULL_OBJECT));
             }
             if(cohortOutputPort.checkCohortNameAlreadyExist(cohort.getName())){
-                throw new CohortException(String.format(ErrorMessages.COHORT_NAME_EXISTS));
+                throw new GenericException(String.format(ErrorMessages.COHORT_NAME_EXISTS));
             }
             cohort.setDateCreated(ZonedDateTime.now());
 
@@ -58,13 +58,13 @@ public class CohortService implements CohortUseCase {
 
             return cohortObject;
         } catch (IllegalArgumentException e) {
-            throw new CohortException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+            throw new GenericException(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @Override
-    public Cohort viewCohortDetails(String cohortId) throws CohortException {
+    public Cohort viewCohortDetails(String cohortId) throws GenericException {
         validateInput(cohortId , "cohortId");
         return cohortOutputPort.findCohortById(cohortId);
     }
