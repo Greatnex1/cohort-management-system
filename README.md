@@ -1,1 +1,1 @@
-Cohort creation
+A Cohort Mangement System Application
